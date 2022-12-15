@@ -52,6 +52,8 @@ out() {
         return 1
     fi
     local dst
+    local tmpdst
+    tmpdst=`mktemp` || return 1
     mkdir -p "${OUT_DIR}"
 
     if [[ -z "${2}" ]]; then
@@ -61,11 +63,12 @@ out() {
     fi
 
     if [[ -z "${1}" || "${1}" == "-" ]]; then
-        cat > "${dst}"
+        cat > "${tmpdst}"
     else
-        cat "${1}"
+        cat "${1}" > "${tmpdst}"
     fi
 
+    mv "${tmpdst}" "${dst}"
     >&2 echo "Written to ${dst}"
 }
 
