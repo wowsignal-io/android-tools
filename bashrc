@@ -183,7 +183,7 @@ __addr_info() {
     echo "<${a}> "
 }
 
-PS1="\[$(__clr)\]$(whoami)@$(__host_color)\h\[$(__clr)\] \w "
+PS1="\[$(__clr)\]\$(whoami)@$(__host_color)\h\[$(__clr)\] \$(pwd) "
 PS1+="\[$(__error_color)\]\$(__error_info)"
 PS1+="\[$(__addr_color)\]\$(__addr_info)"
 PS1+="\[$(__clr)\]> "
