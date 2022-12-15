@@ -4,8 +4,8 @@ This is a wrapper script around `adb` that puts the user in a `bash` session wit
 
 Contents:
 
-* [Jonathan Levine's Tools](http://newandroidbook.com/tools)
-* Statically linked `bash`
+* Automatically downloads [Jonathan Levine's Tools](http://newandroidbook.com/tools)
+* Automatically downloads a statically linked `bash` (thanks, Ubuntu!)
 * A `bashrc` file with extra helpers and configuration (like setting the `HISTFILE`)
 * A collection of helper functions and aliases, such as:
     - `ip4` - print the device's IPv4 address, if one is available
@@ -20,6 +20,8 @@ This tool requires:
 
 ## USAGE
 
-```bash
-./adb_bash.sh  # Copies a bunch of tools and puts you in a bash session
-```
+Clone or download this repository, `cd` into it and then run `./adb_bash.sh`.
+
+## I have multiple devices and...
+
+I gotcha - set `ANDROID_SERIAL` or pass the serial you want to use to the script as the first argument.
