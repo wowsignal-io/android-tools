@@ -33,7 +33,7 @@ reload() {
 
 # Find a file in the current tree that includes a string. (Shorthand for find.)
 f() { 
-    find . -iname "*${1}*"
+    find . -iname "*${1}*" 2>/dev/null
 }
 
 # Computes the hash of a string. Run `h` with no arguments to display usage and
