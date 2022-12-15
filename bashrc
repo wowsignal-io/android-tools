@@ -1,75 +1,38 @@
-alias l='ls -lh'
-alias la='ls -lha'
+## USEFUL FUNCTIONS ##
 
-HISTFILE=/data/local/tmp/.bash_history
-HISTSIZE=100000
-SAVEHIST=100000
-
-bash /data/local/tmp/bmo.sh
-
-
-__clr() {
-	echo -ne "\033[0m"
+# Strip the control characters from stdin. Useful, e.g. to pipe colored output
+# into a command not expecting color.
+strip_control() {
+    # The sed call strips escape characters from the string. The additional perl
+    # one-liner deletes the literal ^(B which `tput sgr0` outputs on some
+    # systems for unknown reasons. (It's not in the standard, so WTF?)
+    sed "s,$(printf '\033')\\[[0-9;]*[a-zA-Z],,g" \
+    | sed 's/\033(B//g'
 }
 
-__host_color() {
-	echo -ne "\033[92m"
-}
-
-__error_color() {
-	echo -ne "\033[31m"
-}
-
-__addr_color() {
-	echo -ne "\033[33m"
-}
-
-__error_info() {
-    ret=$?
-    case "$ret" in
-        "0")
-        ;;
-        "126")
-            echo -n "[EPERM (${ret})] "
-        ;;
-        "127")
-            echo -n "[ENOENT (${ret})] "
-        ;;
-        "130")
-            echo -n "[EINT (${ret})] "
-        ;;
-        *)
-            echo -n "[E (${ret})] "
-        ;;
-    esac
-}
-
+# Prints one IPv4 address assigned to this device per line of output.
 ip4() {
     ifconfig | grep inet | grep -v 127.0.0.1 | grep -oE '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
 }
 
-__addr() {
-    local ips
-    local n
-    local first
-    local k
-    ips="`ip4`" || return 1
-    n=`wc -l <<< "$ips"`
-    if [[ n -eq 1 ]]; then
-        echo "${ips}"
+# Average round-trip time to the specified host.
+rtt() {
+    local times=$(ping -c5 $1 | grep time= | perl -pe 's/.*time=(.*?) \w.\n*/$1 +/' | sed 's/+$//g') || return 1
+    bc -l <<< "(${times}) / 5"
+}
+
+# Reload the shell: reset and resource the rc file.
+reload() {
+    reset
+    if [[ "$1" == "-h" ]]; then
+        exec /bin/bash -l
     else
-        first=`head -n1 <<< "$ips"`
-        k=`bc -l <<< "$n - 1"`
-        echo "${first} + $k"
+        source ~/.bash_profile
     fi
 }
 
-__addr_info() {
-    local a
-    a=`__addr` || return 1
-    echo "<${a}> "
-}
-
+# Computes the hash of a string. Run `h` with no arguments to display usage and
+# examples.
 h() {
     if [[ "${#}" == 0 ]]; then
         echo "Usage: h ALGO STRING"
@@ -113,6 +76,76 @@ h() {
             fi
         ;;
     esac
+}
+
+# Some useful aliases:
+alias l='ls -lh'
+alias la='ls -lha'
+
+## BASH SETUP FOLLOWS ##
+
+HISTFILE=/data/local/tmp/.bash_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+bash /data/local/tmp/bmo.sh
+
+__clr() {
+	echo -ne "\033[0m"
+}
+
+__host_color() {
+	echo -ne "\033[92m"
+}
+
+__error_color() {
+	echo -ne "\033[31m"
+}
+
+__addr_color() {
+	echo -ne "\033[33m"
+}
+
+__error_info() {
+    ret=$?
+    case "$ret" in
+        "0")
+        ;;
+        "126")
+            echo -n "[EPERM (${ret})] "
+        ;;
+        "127")
+            echo -n "[ENOENT (${ret})] "
+        ;;
+        "130")
+            echo -n "[EINT (${ret})] "
+        ;;
+        *)
+            echo -n "[E (${ret})] "
+        ;;
+    esac
+}
+
+__addr() {
+    local ips
+    local n
+    local first
+    local k
+    ips="`ip4`" || return 1
+    n=`wc -l <<< "$ips"`
+    if [[ n -eq 1 ]]; then
+        echo "${ips}"
+    else
+        first=`head -n1 <<< "$ips"`
+        k=`bc -l <<< "$n - 1"`
+        echo "${first} + $k"
+    fi
+}
+
+__addr_info() {
+    local a
+    a=`__addr` || return 1
+    echo "<${a}> "
 }
 
 PS1="\[$(__clr)\]$(whoami)@$(__host_color)\h\[$(__clr)\] \w "
