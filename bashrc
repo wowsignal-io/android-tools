@@ -21,16 +21,6 @@ rtt() {
     bc -l <<< "(${times}) / 5"
 }
 
-# Reload the shell: reset and resource the rc file.
-reload() {
-    reset
-    if [[ "$1" == "-h" ]]; then
-        exec /bin/bash -l
-    else
-        source ~/.bash_profile
-    fi
-}
-
 # Find a file in the current tree that includes a string. (Shorthand for find.)
 f() { 
     find . -iname "*${1}*" 2>/dev/null
