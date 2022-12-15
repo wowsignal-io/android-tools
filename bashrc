@@ -71,7 +71,7 @@ out() {
 
 # Takes a screenshot which will be automatically downloaded to the host machine.
 s() {
-    screencap | out "-" "screenshot_$(date +%Y%m%dT%T).png"
+    screencap -p | out "-" "screenshot_$(date +%Y%m%dT%T).png"
 }
 
 # Computes the hash of a string. Run `h` with no arguments to display usage and

@@ -26,6 +26,9 @@ In the `bash` shell, running the command `out` will collect files into a special
 directory in `/data/local/temp` that's continually `adb pull`'d onto the host
 machine. `s` is a special case of `out` that takes and sends a screenshot.
 
+If you set the env variable `ANDROID_AUTOPEN_FILES` then, on macOS only, the
+pulled files will be automatically opened with a call to `open`.
+
 ## Requirements
 
 This tool requires:
