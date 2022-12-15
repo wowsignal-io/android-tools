@@ -7,7 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qqy bash-static
 RUN mkdir -p /target
 
 WORKDIR "${HOME}"
-ADD run.sh "${HOME}/"
-RUN chmod +x run.sh
+ADD docker_entrypoint.sh "${HOME}/"
+RUN chmod +x docker_entrypoint.sh
 
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["./docker_entrypoint.sh"]
