@@ -1,4 +1,4 @@
-# Nicer adb shell + Jonathan Levine's (and more) tools
+# Nicer adb shell + Jonathan Levin's (and more) tools
 
 This is a wrapper script around `adb` that puts the user in a `bash` session with the `PATH` variable including `/data/local/tmp`.
 
