@@ -2,6 +2,9 @@
 
 This is a wrapper script around `adb` that puts the user in a `bash` session with the `PATH` variable including `/data/local/tmp`.
 
+**Important: the tools `jtrace64`, `bdsm`, `imjtool`, `memento` and `procexp`
+are downloaded from nightly build archives and may be unstable.
+
 Contents:
 
 * Automatically downloads *nighly builds* of [Jonathan Levin's
