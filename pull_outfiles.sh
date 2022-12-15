@@ -9,7 +9,7 @@ mkdir -p "${TARGET}"
 
 __maybe_open() {
     [[ -z "${ANDROID_AUTOPEN_FILES}" ]] && return
-    echo -e "\033[32mOPEN \033[34m${1}\n\033[0m"
+    echo -e "\n\r\033[42mOPEN\033[0m \033[34m${1}\n\033[0m"
     open "${TARGET}/${1}"
 }
 

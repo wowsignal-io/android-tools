@@ -41,11 +41,6 @@ if [[ ! -f "${BUILD}/bash-static" ]]; then
     docker run --rm --platform linux/aarch64 -v "${BUILD}":/target android_bash_local
 fi
 
-while true; do
-    ./pull_outfiles.sh
-    sleep 1
-done &
-
 adb push "${BUILD}/jtrace64" "${TARGET}/"
 adb push "${BUILD}/data/local/tmp/bdsm" "${TARGET}/bdsm"
 adb push "${BUILD}/imjtool.android.arm64" "${TARGET}/imjtool"
@@ -54,6 +49,11 @@ adb push "${BUILD}/procexp.armv7" "${TARGET}/procexp"
 adb push "${BUILD}/bash-static" "${TARGET}/bash"
 adb push "$(pwd)/bmo.sh" "${TARGET}/bmo.sh"
 adb push "$(pwd)/bashrc" "${TARGET}/bashrc"
+
+while true; do
+    ./pull_outfiles.sh
+    sleep 1
+done &
 
 adb shell -t 'export PATH=${PATH}:/data/local/tmp:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bash --rcfile ${TARGET}/bashrc"
 
