@@ -10,6 +10,8 @@ Contents:
 * A collection of helper functions and aliases, such as:
     - `ip4` - print the device's IPv4 address, if one is available
     - `h` - a uniform wrapper around various hash programs, like md5 and sha
+    - `strip_control` - removes control characters from input
+    - `f` - opinionated `find` shorthand
 
 ## Requirements
 

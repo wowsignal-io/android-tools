@@ -15,12 +15,6 @@ ip4() {
     ifconfig | grep inet | grep -v 127.0.0.1 | grep -oE '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
 }
 
-# Average round-trip time to the specified host.
-rtt() {
-    local times=$(ping -c5 $1 | grep time= | perl -pe 's/.*time=(.*?) \w.\n*/$1 +/' | sed 's/+$//g') || return 1
-    bc -l <<< "(${times}) / 5"
-}
-
 # Find a file in the current tree that includes a string. (Shorthand for find.)
 f() { 
     find . -iname "*${1}*" 2>/dev/null
