@@ -25,3 +25,7 @@ Clone or download this repository, `cd` into it and then run `./adb_bash.sh`.
 ## I have multiple devices and...
 
 I gotcha - set `ANDROID_SERIAL` or pass the serial you want to use to the script as the first argument.
+
+## Waaa! It takes a long time to download all the dependencies!
+
+Only the first time, fam.
