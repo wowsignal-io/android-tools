@@ -4,7 +4,7 @@ This is a wrapper script around `adb` that puts the user in a `bash` session wit
 
 Contents:
 
-* Automatically downloads [Jonathan Levine's Tools](http://newandroidbook.com/tools)
+* Automatically downloads [Jonathan Levin's Tools](http://newandroidbook.com/tools)
 * Automatically downloads a statically linked `bash` (thanks, Ubuntu!)
 * A `bashrc` file with extra helpers and configuration (like setting the `HISTFILE`)
 * A collection of helper functions and aliases, such as:
