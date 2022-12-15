@@ -1,5 +1,11 @@
+#!/bin/bash
+
 set -e
 shopt -s expand_aliases
+
+THIS=`readlink -f ${BASH_SOURCE}`
+CWD=`dirname "${THIS}"`
+cd "${CWD}"
 
 which -s wget || alias wget='curl -O --retry 999 --retry-max-time 0 -C -'
 [[ `uname -a` == *Darwin* ]] && alias nproc='sysctl -n hw.logicalcpu'
@@ -29,6 +35,11 @@ if [[ ! -f "${BUILD}/bash-static" ]]; then
     docker run --rm --platform linux/aarch64 -v "${BUILD}":/target android_bash_local
 fi
 
+while true; do
+    ./pull_outfiles.sh
+    sleep 1
+done &
+
 adb push "${BUILD}/jtrace64" "${TARGET}/"
 adb push "${BUILD}/data/local/tmp/bdsm" "${TARGET}/bdsm"
 adb push "${BUILD}/imjtool.android.arm64" "${TARGET}/imjtool"
@@ -39,3 +50,5 @@ adb push "$(pwd)/bmo.sh" "${TARGET}/bmo.sh"
 adb push "$(pwd)/bashrc" "${TARGET}/bashrc"
 
 adb shell -t 'export PATH=${PATH}:/data/local/tmp:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bash --rcfile ${TARGET}/bashrc"
+
+kill %1

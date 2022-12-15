@@ -17,6 +17,14 @@ Contents:
     - `h` - a uniform wrapper around various hash programs, like md5 and sha
     - `strip_control` - removes control characters from input
     - `f` - opinionated `find` shorthand
+    - `out` and `s` - collect files or screenshots from within the shell to an
+      output directory on the host
+
+## Automatic `adb pull`
+
+In the `bash` shell, running the command `out` will collect files into a special
+directory in `/data/local/temp` that's continually `adb pull`'d onto the host
+machine. `s` is a special case of `out` that takes and sends a screenshot.
 
 ## Requirements
 

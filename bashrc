@@ -1,3 +1,16 @@
+## BASIC DEFINITIONS ##
+
+alias l='ls -lh'
+alias la='ls -lha'
+BASH_PROFILE=`readlink -f ${BASH_SOURCE}`
+export HOME=`dirname "${BASH_PROFILE}"`
+export EDITOR=`which vim`
+export OUT_DIR="${HOME}/out"
+
+HISTFILE="${HOME}/.bash_history"
+HISTSIZE=100000
+SAVEHIST=100000
+
 ## USEFUL FUNCTIONS ##
 
 # Strip the control characters from stdin. Useful, e.g. to pipe colored output
@@ -20,10 +33,51 @@ f() {
     find . -iname "*${1}*" 2>/dev/null
 }
 
+# Usage: out SOURCE [NAME]
+#
+# Write the file from SOURCE to the output directory, which will be pulled to
+# the host machine regularly.
+#
+# If SOURCE is "-" or not set, then 'out' will cat its stdin.
+#
+# If NAME is provided, then it will be the basename of the new file.
+out() {
+    if [[ "${1}" == "-h" || "${1}" == "--help" ]]; then
+        echo "Usage: out SOURCE [NAME]"
+        echo "Write the file from SOURCE to the output directory, which will be pulled to the host machine regularly."
+        echo
+        echo "If SOURCE is "-" or not set, then 'out' will cat its stdin."
+        echo
+        echo "If NAME is provided, then it will be the basename of the new file."
+        return 1
+    fi
+    local dst
+    mkdir -p "${OUT_DIR}"
+
+    if [[ -z "${2}" ]]; then
+        dst=$(mktemp -p "${OUT_DIR}") || return 1
+    else
+        dst="${OUT_DIR}/${2}"
+    fi
+
+    if [[ -z "${1}" || "${1}" == "-" ]]; then
+        cat > "${dst}"
+    else
+        cat "${1}"
+    fi
+
+    >&2 echo "Written to ${dst}"
+}
+
+# Takes a screenshot which will be automatically downloaded to the host machine.
+s() {
+    screencap | out "-" "screenshot_$(date +%Y%m%dT%T).png"
+}
+
 # Computes the hash of a string. Run `h` with no arguments to display usage and
 # examples.
 h() {
-    if [[ "${#}" == 0 ]]; then
+    if [[ "${#}" -eq 0 ]]; then
         echo "Usage: h ALGO STRING"
         echo "Print hash digest of STRING using ALGO"
         echo
@@ -67,15 +121,7 @@ h() {
     esac
 }
 
-# Some useful aliases:
-alias l='ls -lh'
-alias la='ls -lha'
-
-## BASH SETUP FOLLOWS ##
-
-HISTFILE=/data/local/tmp/.bash_history
-HISTSIZE=100000
-SAVEHIST=100000
+## BASH PROMPT FOLLOWS ##
 
 bash /data/local/tmp/bmo.sh
 
