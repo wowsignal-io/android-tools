@@ -17,16 +17,22 @@ fi
 
 export BASE_URL="http://newandroidbook.com/tools"
 JONATHAN_LEVINE_TOOLS="jtrace\0bdsm\0imjtool\0memento\0procexp"
-BUILD="$(pwd)/build"
+export BUILD="$(pwd)/build"
 TARGET="/data/local/tmp"
 
 mkdir -p "${BUILD}"
 cd "${BUILD}"
 
-printf "${JONATHAN_LEVINE_TOOLS}" | xargs -0 -J{} -P$(nproc) -n 1 bash -c \
-    'find build -iname "*jtrace*" 2>/dev/null 1>&2 && exit' \
-    '( wget ${BASE_URL}/${1}.tgz || wget ${BASE_URL}/${1}.tar ) ' \
-    '&& ( tar -xzf ${1}.tgz 2>/dev/null || tar -xf ${1}.tar )' _ {}
+__dl_tool() {
+    find "${BUILD}" -iname "*jtrace*" 2>/dev/null 1>&2 && return
+
+    ( wget ${BASE_URL}/${1}.tgz || wget ${BASE_URL}/${1}.tar ) || return 1
+    tar -xzf ${1}.tgz 2>/dev/null || tar -xf ${1}.tar
+}
+
+export -f __dl_tool
+printf "${JONATHAN_LEVINE_TOOLS}" | \
+    xargs -0 -J{} -P$(nproc) -n 1 bash -c '__dl_tool "${1}"' _ {}
 
 cd ..
 
