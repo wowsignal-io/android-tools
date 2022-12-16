@@ -37,7 +37,7 @@ printf "${JONATHAN_LEVINE_TOOLS}" | \
 
 cd ..
 
-if [[ ! -f "${BUILD}/bash-static" ]]; then
+if [[ ! -f "${BUILD}/bash-static" || ! -f "${BUILD}/less-static" ]]; then
     docker build -t android_bash_local --platform=aarch64 .
     docker run --rm --platform linux/aarch64 -v "${BUILD}":/target android_bash_local
 fi
@@ -50,6 +50,7 @@ adb push "${BUILD}/memento.arm64.android" "${TARGET}/bin/memento"
 adb push "${BUILD}/procexp.armv7" "${TARGET}/bin/procexp"
 adb push "${BUILD}/dextra.arm64" "${TARGET}/bin/dextra"
 adb push "${BUILD}/bash-static" "${TARGET}/bin/bash"
+adb push "${BUILD}/less-static" "${TARGET}/bin/less"
 adb push "$(pwd)/bmo.sh" "${TARGET}/bin/bmo.sh"
 adb push "$(pwd)/dachshund.sh" "${TARGET}/bin/dachshund.sh"
 adb push "$(pwd)/bashrc" "${TARGET}/.bashrc"
