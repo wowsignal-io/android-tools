@@ -56,12 +56,13 @@ adb push "$(pwd)/dachshund.sh" "${TARGET}/bin/dachshund.sh"
 adb push "$(pwd)/bashrc" "${TARGET}/.bashrc"
 
 while true; do
-    sleep 1
-    ./pull_outfiles.sh
+    ./pull_outfiles.sh 1 || break
 done &
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-adb shell -t 'export PATH=${PATH}:/data/local/tmp/bin:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bin/bash --rcfile ${TARGET}/.bashrc"
+adb shell -t 'export PATH=${PATH}:/data/local/tmp/bin:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bin/bash --rcfile ${TARGET}/.bashrc" || true
 
 kill %1
+# Sometimes, bash doesn't kill the background job, so we need to do this.
+ps | grep ./pull_outfiles | grep -v grep | cut -wf1 | xargs kill

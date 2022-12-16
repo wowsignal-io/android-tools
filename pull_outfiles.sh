@@ -2,6 +2,8 @@
 
 set -e
 
+sleep "${1}"
+
 export TARGET="$(pwd)/out"
 export REMOTE_OUT="/data/local/tmp/out"
 
