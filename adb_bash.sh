@@ -52,9 +52,11 @@ adb push "$(pwd)/dachshund.sh" "${TARGET}/dachshund.sh"
 adb push "$(pwd)/bashrc" "${TARGET}/bashrc"
 
 while true; do
-    ./pull_outfiles.sh
     sleep 1
+    ./pull_outfiles.sh
 done &
+
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 adb shell -t 'export PATH=${PATH}:/data/local/tmp:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bash --rcfile ${TARGET}/bashrc"
 
