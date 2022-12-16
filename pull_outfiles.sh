@@ -16,7 +16,7 @@ __maybe_open() {
 __maybe_pull() {
     [[ -f "${TARGET}/${1}" ]] \
     || ( \
-        echo -ne "\n\r\033[42mPULLED\033[0m \033[34m${1}\n\033[0m" \
+        echo -ne "\n\r\033[46mPULLED\033[0m \033[32m${1}\033[0m -> \033[33m${TARGET}/${1}\033[0m\n" \
         && adb pull "${REMOTE_OUT}/${1}" "${TARGET}/${1}" >/dev/null \
         && __maybe_open "${1}" \
     )
