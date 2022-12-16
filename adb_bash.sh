@@ -42,16 +42,17 @@ if [[ ! -f "${BUILD}/bash-static" ]]; then
     docker run --rm --platform linux/aarch64 -v "${BUILD}":/target android_bash_local
 fi
 
-adb push "${BUILD}/jtrace64" "${TARGET}/"
-adb push "${BUILD}/data/local/tmp/bdsm" "${TARGET}/bdsm"
-adb push "${BUILD}/imjtool.android.arm64" "${TARGET}/imjtool"
-adb push "${BUILD}/memento.arm64.android" "${TARGET}/memento"
-adb push "${BUILD}/procexp.armv7" "${TARGET}/procexp"
-adb push "${BUILD}/dextra.arm64" "${TARGET}/dextra"
-adb push "${BUILD}/bash-static" "${TARGET}/bash"
-adb push "$(pwd)/bmo.sh" "${TARGET}/bmo.sh"
-adb push "$(pwd)/dachshund.sh" "${TARGET}/dachshund.sh"
-adb push "$(pwd)/bashrc" "${TARGET}/bashrc"
+adb shell "mkdir -p ${TARGET}/bin/"
+adb push "${BUILD}/jtrace64" "${TARGET}/bin/"
+adb push "${BUILD}/data/local/tmp/bdsm" "${TARGET}/bin/bdsm"
+adb push "${BUILD}/imjtool.android.arm64" "${TARGET}/bin/imjtool"
+adb push "${BUILD}/memento.arm64.android" "${TARGET}/bin/memento"
+adb push "${BUILD}/procexp.armv7" "${TARGET}/bin/procexp"
+adb push "${BUILD}/dextra.arm64" "${TARGET}/bin/dextra"
+adb push "${BUILD}/bash-static" "${TARGET}/bin/bash"
+adb push "$(pwd)/bmo.sh" "${TARGET}/bin/bmo.sh"
+adb push "$(pwd)/dachshund.sh" "${TARGET}/bin/dachshund.sh"
+adb push "$(pwd)/bashrc" "${TARGET}/.bashrc"
 
 while true; do
     sleep 1
@@ -60,6 +61,6 @@ done &
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-adb shell -t 'export PATH=${PATH}:/data/local/tmp:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bash --rcfile ${TARGET}/bashrc"
+adb shell -t 'export PATH=${PATH}:/data/local/tmp/bin:/system/bin:/system/xbin:/vendor/bin:; '"${TARGET}/bin/bash --rcfile ${TARGET}/.bashrc"
 
 kill %1
