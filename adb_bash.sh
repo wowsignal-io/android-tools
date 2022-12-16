@@ -24,6 +24,9 @@ mkdir -p "${BUILD}"
 cd "${BUILD}"
 
 __dl_tool() {
+    find "${BUILD}" -iname "*${1}*" 2>/dev/null | grep -q . && echo "CACHED ${1}" && return
+    echo "DOWNLOAD ${1}"
+
     ( wget ${BASE_URL}/${1}.tgz || wget ${BASE_URL}/${1}.tar ) || return 1
     tar -xzf ${1}.tgz 2>/dev/null || tar -xf ${1}.tar
 }
