@@ -2,6 +2,8 @@
 
 This is a wrapper script around `adb` that puts the user in a `bash` session with the `PATH` variable including `/data/local/tmp`.
 
+https://user-images.githubusercontent.com/1655290/208040163-fadabf05-d378-4772-a12a-927a6a0afa3e.mp4
+ 
 **Important: the tools `jtrace64`, `bdsm`, `imjtool`, `memento` and `procexp`
 are downloaded from nightly build archives and may be unstable.**
 
