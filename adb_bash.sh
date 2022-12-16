@@ -16,7 +16,7 @@ if [[ ! -z "${1}" ]]; then
 fi
 
 export BASE_URL="http://newandroidbook.com/tools"
-JONATHAN_LEVINE_TOOLS="jtrace\0bdsm\0imjtool\0memento\0procexp"
+JONATHAN_LEVINE_TOOLS="jtrace\0bdsm\0imjtool\0memento\0procexp\0dextra"
 export BUILD="$(pwd)/build"
 TARGET="/data/local/tmp"
 
@@ -24,8 +24,6 @@ mkdir -p "${BUILD}"
 cd "${BUILD}"
 
 __dl_tool() {
-    find "${BUILD}" -iname "*jtrace*" 2>/dev/null 1>&2 && return
-
     ( wget ${BASE_URL}/${1}.tgz || wget ${BASE_URL}/${1}.tar ) || return 1
     tar -xzf ${1}.tgz 2>/dev/null || tar -xf ${1}.tar
 }
@@ -46,6 +44,7 @@ adb push "${BUILD}/data/local/tmp/bdsm" "${TARGET}/bdsm"
 adb push "${BUILD}/imjtool.android.arm64" "${TARGET}/imjtool"
 adb push "${BUILD}/memento.arm64.android" "${TARGET}/memento"
 adb push "${BUILD}/procexp.armv7" "${TARGET}/procexp"
+adb push "${BUILD}/dextra.arm64" "${TARGET}/dextra"
 adb push "${BUILD}/bash-static" "${TARGET}/bash"
 adb push "$(pwd)/bmo.sh" "${TARGET}/bmo.sh"
 adb push "$(pwd)/dachshund.sh" "${TARGET}/dachshund.sh"
