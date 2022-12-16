@@ -48,6 +48,7 @@ adb push "${BUILD}/memento.arm64.android" "${TARGET}/memento"
 adb push "${BUILD}/procexp.armv7" "${TARGET}/procexp"
 adb push "${BUILD}/bash-static" "${TARGET}/bash"
 adb push "$(pwd)/bmo.sh" "${TARGET}/bmo.sh"
+adb push "$(pwd)/dachshund.sh" "${TARGET}/dachshund.sh"
 adb push "$(pwd)/bashrc" "${TARGET}/bashrc"
 
 while true; do

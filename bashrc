@@ -126,8 +126,6 @@ h() {
 
 ## BASH PROMPT FOLLOWS ##
 
-bash /data/local/tmp/bmo.sh
-
 __clr() {
 	echo -ne "\033[0m"
 }
@@ -190,3 +188,13 @@ PS1="\[$(__clr)\]\$(whoami)@$(__host_color)\h\[$(__clr)\] \$(pwd) "
 PS1+="\[$(__error_color)\]\$(__error_info)"
 PS1+="\[$(__addr_color)\]\$(__addr_info)"
 PS1+="\[$(__clr)\]> "
+
+ascii_art() {
+    local x=$((RANDOM % 2))
+    case "${x}" in
+        0) bmo.sh ;;
+        1) dachshund.sh ;;
+    esac
+}
+
+ascii_art

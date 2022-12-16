@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/system/bin/env bash
 
 light() {
 	echo -ne "\033[92m"
