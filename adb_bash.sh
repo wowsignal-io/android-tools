@@ -15,8 +15,8 @@ if [[ ! -z "${1}" ]]; then
     shift
 fi
 
-export BASE_URL="http://newandroidbook.com/tools"
-JONATHAN_LEVINE_TOOLS="jtrace\0bdsm\0imjtool\0memento\0procexp\0dextra"
+export BASE_URL="https://newandroidbook.com/tools"
+JONATHAN_LEVINE_TOOLS="jtrace.tgz\0bdsm.tgz\0imjtool.tgz\0memento.tgz\0procexp.tar\0dextra.tar"
 export BUILD="$(pwd)/build"
 TARGET="/data/local/tmp"
 
@@ -27,8 +27,8 @@ __dl_tool() {
     find "${BUILD}" -iname "*${1}*" 2>/dev/null | grep -q . && echo "CACHED ${1}" && return
     echo "DOWNLOAD ${1}"
 
-    ( wget ${BASE_URL}/${1}.tgz || wget ${BASE_URL}/${1}.tar ) || return 1
-    tar -xzf ${1}.tgz 2>/dev/null || tar -xf ${1}.tar
+    ( wget ${BASE_URL}/${1} ) || return 1
+    tar -xzf ${1} 2>/dev/null
 }
 
 export -f __dl_tool

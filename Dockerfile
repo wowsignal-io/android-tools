@@ -6,8 +6,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qqy bash-static build-essent
 
 RUN mkdir -p /target
 
-WORKDIR "${HOME}"
-ADD docker_entrypoint.sh "${HOME}/"
+WORKDIR /root
+ADD docker_entrypoint.sh /root
 RUN chmod +x docker_entrypoint.sh
 
-ENTRYPOINT ["./docker_entrypoint.sh"]
+ENTRYPOINT ["/root/docker_entrypoint.sh"]
